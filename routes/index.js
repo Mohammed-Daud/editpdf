@@ -3,6 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+  //console.log('The value for FOO is:', process.env.AT);
   res.render('index', { title: 'Express' });
 });
 
