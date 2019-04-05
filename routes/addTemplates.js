@@ -3,7 +3,8 @@ var router = express.Router();
 const tplController = require('../controllers/templatesController');
 
 
-router.get('/', tplController.addTemplate);
+router.get('/add', tplController.addTemplate);
+router.post('/save', tplController.saveTemplate);
 
 router.get('/view', tplController.viewTemplate);
 
