@@ -1,7 +1,6 @@
 
 exports.addTemplate = function(req, res) {
-    // res.render('index', { title: 'Express' });
-    res.render('index', { title: 'Express' });
+    res.render('templates/template_add_form.ejs');
 };
 
 exports.saveTemplate = function(req, res) {
@@ -9,4 +8,8 @@ exports.saveTemplate = function(req, res) {
 };
 
 
+
+exports.viewTemplate = function(req, res) {
+    res.render('index.ejs');
+};
 
