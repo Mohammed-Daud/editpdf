@@ -2,28 +2,58 @@ const {
     knex
 } = require("./../config/database");
 
-exports.addTemplate = function(req, res) {
+exports.addTemplate = function (req, res) {
     res.render('templates/template_add_form.ejs');
 };
 
-exports.saveTemplate = function(req, res) {
+exports.saveTemplate = function (req, res) {
     res.send('NOT IMPLEMENTED: Author list');
 };
 
 
 
-exports.viewTemplate = function (req, res) {
-    knex.select(knex.raw("* from templates t"))
-    .knex.raw("* from template_pdfs tp")
+exports.viewTemplate = async function (req, res) {
+    Promise.all([getTemplates(knex), getTempPdfs(knex)])
+        .then(([templates, templatePdfs]) => {
+            console.log('templates, templatePdfs: ', templates, templatePdfs);
+            res.render('templates/templates_list.ejs', {
+                templates,
+                templatePdfs
+            });
+        })
+};
+
+exports.editTemplateInfo = function(req, res) {
+    console.log('req: ', req.params.tempId);
+    return res.send(req.params.tempId);
+
+}
+
+const getTemplates = function (knex) {
+    return knex.select(knex.raw("* from templates"))
+        .where("user_id", 1)
         .debug()
         .then(result => {
-            console.log('result: ', result);
-            res.render('templates/templates_list', {
-                teplates: result
-            })
+            // console.log('result: ', result);
+            return result;
         })
         .catch(err => {
-            console.log("TCL: err", err);
+            console.log("getTemlates: err", err);
             throw err;
-        })    
+        })
+
+};
+
+const getTempPdfs = function (knex) {
+    return knex.select(knex.raw("* from template_pdfs"))
+        .debug()
+        .then(result => {
+            // console.log('result: ', result);
+            return result;
+        })
+        .catch(err => {
+            console.log("getTempPdfs: err", err);
+            throw err;
+        })
+
 };

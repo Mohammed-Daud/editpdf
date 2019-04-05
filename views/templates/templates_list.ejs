@@ -1,14 +1,71 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<%= process.env.APP_URL %>/stylesheets/jumbotron-narrow.css">
+
     <title>Template List</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
+
 <body>
-    
+    <div class="container">
+        <div class="header clearfix">
+            <nav>
+                <ul class="nav nav-pills pull-right">
+                    <li role="presentation" class="active"><a href="#">Home</a></li>
+                    <li role="presentation"><a href="#">About</a></li>
+                    <li role="presentation"><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+            <h3 class="text-muted">Project name</h3>
+        </div>
+
+        <div class="jumbotron">
+            <h1>Template List</h1>
+        </div>
+
+        <div class="row marketing">
+            <table class="table-bordered table">
+                <tr>
+                    <th>Template Name</th>
+                    <th>PDF</th>
+                    <th>Action</th>
+                </tr>
+                <% templates.forEach(template => {%>
+                    <tr>
+                        <td><%= template.temp_name %></td>
+                        <td>
+                            <ol>
+                                <% templatePdfs.forEach(pdf => {%>
+                                    <% if(template.id == pdf.temp_id){%>
+                                        <li><%= pdf.pdf_name %></li>
+                                    <% } %>
+                                <% }); %>
+                            </ol>
+                        </td>
+                        <td>
+                            <a href="/templates/edit-info/<%= template.id %>" class="btn btn-xs btn-default">Edit Fill Info</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"></td>
+                    </tr>
+
+                <% }); %>
+
+            </table>
+        </div>
+
+        <footer class="footer">
+            <p>&copy; 2016 Company, Inc.</p>
+        </footer>
+
+    </div> <!-- /container -->
+
 </body>
+
 </html>
