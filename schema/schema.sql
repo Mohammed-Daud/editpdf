@@ -53,3 +53,15 @@ CREATE TABLE fill_infos (
 alter table templates add foreign key (user_id) references users(id) on delete cascade;
 alter table template_pdfs add foreign key (temp_id) references templates(id) on delete cascade;
 alter table fill_infos add foreign key (pdf_id) references template_pdfs(id) on delete cascade;
+
+INSERT INTO `docpull_biz`.`users` (`user_name`, `email`, `password`) VALUES ('Deepak', 'deepak@test.com', '123456');
+
+INSERT INTO `docpull_biz`.`templates` (`temp_name`, `user_id`) VALUES ('Template 1', '1');
+INSERT INTO `docpull_biz`.`templates` (`temp_name`, `user_id`) VALUES ('Template 2', '1');
+
+INSERT INTO `docpull_biz`.`template_pdfs` (`temp_id`, `pdf_name`, `pdf_sequence`) VALUES ('1', 'pdf_1.pdf', '0');
+INSERT INTO `docpull_biz`.`template_pdfs` (`temp_id`, `pdf_name`, `pdf_sequence`) VALUES ('1', 'pdf_2.pdf', '0');
+INSERT INTO `docpull_biz`.`template_pdfs` (`temp_id`, `pdf_name`, `pdf_sequence`) VALUES ('1', 'pdf_3.pdf', '0');
+
+INSERT INTO `docpull_biz`.`template_pdfs` (`temp_id`, `pdf_name`, `pdf_sequence`) VALUES ('2', 'pdf_1.pdf', '0');
+INSERT INTO `docpull_biz`.`template_pdfs` (`temp_id`, `pdf_name`, `pdf_sequence`) VALUES ('2', 'pdf_2.pdf', '0');
