@@ -5,7 +5,7 @@ const tplController = require('../controllers/templatesController');
 
 router.get('/', tplController.addTemplate);
 
-router.get('/view-templates', tplController.viewTemplate);
+router.get('/view', tplController.viewTemplate);
 
 
 module.exports = router;
