@@ -13,5 +13,7 @@ router.post('/save', tplController.saveTemplate);
 router.get('/view', tplController.viewTemplate);
 router.get('/edit-info/:tempId', tplController.editTemplateInfo);
 
+router.post('/edit-info-save', tplController.saveTemplateInfo);
+
 
 module.exports = router;

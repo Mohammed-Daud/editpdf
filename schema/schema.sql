@@ -53,6 +53,7 @@ CREATE TABLE fill_infos (
 alter table templates add foreign key (user_id) references users(id) on delete cascade;
 alter table template_pdfs add foreign key (temp_id) references templates(id) on delete cascade;
 alter table fill_infos add foreign key (pdf_id) references template_pdfs(id) on delete cascade;
+alter table fill_infos add column pdf_page_no int (3) null;
 
 INSERT INTO `docpull_biz`.`users` (`user_name`, `email`, `password`) VALUES ('Deepak', 'deepak@test.com', '123456');
 

@@ -11,6 +11,19 @@ exports.saveTemplate = function(req, res, next) {
     res.json(req.body);
 };
 
+exports.saveTemplateInfo = function(req, res, next) {
+    knex('fill_infos').insert({x_position: req.body.xposition, y_position:req.body.yposition, pdf_id:req.body.pdfId, label: req.body.label, label_value:req.body.name, pdf_page_no:req.body.page})
+    .then(result => {
+        console.log('result: ', result);
+        return result;
+    })
+    .catch(err => {
+        console.log("saveTemplateInfo: err", err);
+        throw err;
+    })
+    console.log(req.body);
+    res.json(req.body);
+};
 
 
 exports.viewTemplate = async function (req, res) {
@@ -35,11 +48,14 @@ exports.editTemplateInfo = async function(req, res) {
         .then(([template, templatePdfs]) => {
             console.log('template: ', template);
             console.log('templatePdfs: ', templatePdfs);
-            const templateJSON = JSON.stringify(templatePdfs)
+            var tempData = {};
+            tempData['template'] = template[0];
+            tempData['templatePdfs'] = templatePdfs;
+            const templateJSON = JSON.stringify(tempData)
             res.render('templates/edit_temp_info.ejs', {
-                template:template[0],
+                // template:template[0],
                 templateJSON,
-                templatePdfs
+                // templatePdfs
             });
         })
         .catch(err => {
