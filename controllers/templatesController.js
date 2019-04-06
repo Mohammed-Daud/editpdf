@@ -2,7 +2,7 @@
 
 const { knex } = require("./../config/database");
 const { insertTemplate } = require("../models/template");
-const { insertPdf } = require("../models/templatePdf");
+const { insertPdf, insertTemplateInfos } = require("../models/templatePdf");
 
 exports.addTemplate = function (req, res) {
     res.render('templates/template_add_form.ejs');
@@ -20,18 +20,31 @@ exports.saveTemplate = async function(req, res, next) {
     res.json(req.body);
 };
 
-exports.saveTemplateInfo = function(req, res, next) {
-    knex('fill_infos').insert({x_position: req.body.xposition, y_position:req.body.yposition, pdf_id:req.body.pdfId, label: req.body.label, label_value:req.body.name, pdf_page_no:req.body.page})
-    .then(result => {
-        console.log('result: ', result);
-        return result;
-    })
-    .catch(err => {
-        console.log("saveTemplateInfo: err", err);
-        throw err;
-    })
+exports.saveTemplateInfo = async function(req, res, next) {
+    const x_position = req.body.xposition;
+    const y_position = req.body.yposition;
+    const pdf_id = req.body.pdfId;
+    const label = req.body.label;
+    const label_value = req.body.name;
+    const pdf_page_no = req.body.page;
+
+    await insertTemplateInfos(x_position, y_position, pdf_id, label, label_value, pdf_page_no);
     console.log(req.body);
+    console.log(req.files);
+    res.redirect('back');
     res.json(req.body);
+    
+    // knex('fill_infos').insert({x_position: req.body.xposition, y_position:req.body.yposition, pdf_id:req.body.pdfId, label: req.body.label, label_value:req.body.name, pdf_page_no:req.body.page})
+    // .then(result => {
+    //     console.log('result: ', result);
+    //     return result;
+    // })
+    // .catch(err => {
+    //     console.log("saveTemplateInfo: err", err);
+    //     throw err;
+    // })
+    // console.log(req.body);
+    // res.json(req.body);
 };
 
 
