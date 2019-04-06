@@ -3,9 +3,57 @@
   <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    
   </head>
   <body>
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
+
+    
+    <div class="container">
+      
+      <div class="row">
+        <div class="col-lg-6">
+          sdfsdf
+        </div>
+        <div class="col-lg-6" style="position: relative;">
+          <!-- <div  style="height:500px; overflow: auto;" id="example1"></div> -->
+          <!-- <iframe style="height:500px; overflow: auto;" src="/uploads/Documentation - Archit.pdf" frameborder="0"></iframe> -->
+
+          <iframe style="height:500px; width:100%; overflow: auto;" src="/uploads/Documentation - Archit.pdf" frameborder="0"></iframe>
+
+          <div style="top:0;left:0;width: calc(100% - 30px);height:100%;position:absolute; background:rgb(0,0,0,0.3);" class="overlay"></div>
+
+        </div>
+      </div>
+      
+    </div>
+    
+    <script src="//code.jquery.com/jquery.js"></script>
+    
+
+    <script>
+    // var iframepos = $("iframe").position();
+    //     $('iframe').contents().find('body').on('mousemove', function (e) { 
+    //     var x = e.clientX + iframepos.left; 
+    //     var y = e.clientY + iframepos.top;
+    //     console.log(x + " " + y);
+    // })
+    $(function(){
+      $('body').mousemove(function(e){
+        var x = e.clientX; 
+        var y = e.clientY;
+        console.log(x + " " + y);
+      });
+      $('.overlay').click(function(){alert('hello');});
+      $('.overlay').onmouse;
+    });
+
+    
+    </script>
+
   </body>
 </html>

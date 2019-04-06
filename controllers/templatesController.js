@@ -1,13 +1,22 @@
 
 
 const { knex } = require("./../config/database");
+const { insertTemplate } = require("../models/template");
+const { insertPdf } = require("../models/templatePdf");
 
 exports.addTemplate = function (req, res) {
     res.render('templates/template_add_form.ejs');
 };
 
-exports.saveTemplate = function(req, res, next) {
-    console.log(req);
+exports.saveTemplate = async function(req, res, next) {
+    const temp_name = req.body.temp_name;
+    const pdfs = req.files;
+    const pdf_sequences = req.body.pdf_sequence;
+    const template_id = await insertTemplate(temp_name);
+    await insertPdf(template_id, pdfs, pdf_sequences);
+    console.log(req.body);
+    console.log(req.files);
+    res.redirect('back');
     res.json(req.body);
 };
 
