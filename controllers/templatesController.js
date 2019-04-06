@@ -31,12 +31,30 @@ exports.viewTemplate = async function (req, res) {
                 templatePdfs
             });
         })
+        .catch(err => {
+            console.log("viewTemplate: err", err);
+            throw err;
+        })
 };
 
-exports.editTemplateInfo = function(req, res) {
+exports.editTemplateInfo = async function(req, res) {
     console.log('req: ', req.params.tempId);
-    return res.send(req.params.tempId);
 
+    Promise.all([getTemplateById(knex, req.params.tempId), getTempPdfByTemplateId(knex, req.params.tempId)])
+        .then(([template, templatePdfs]) => {
+            console.log('template: ', template);
+            console.log('templatePdfs: ', templatePdfs);
+            const templateJSON = JSON.stringify(templatePdfs)
+            res.render('templates/edit_temp_info.ejs', {
+                template:template[0],
+                templateJSON,
+                templatePdfs
+            });
+        })
+        .catch(err => {
+            console.log("viewTemplate: err", err);
+            throw err;
+        })
 }
 
 const getTemplates = function (knex) {
@@ -58,7 +76,7 @@ const getTempPdfs = function (knex) {
     return knex.select(knex.raw("* from template_pdfs"))
         .debug()
         .then(result => {
-            // console.log('result: ', result);
+            console.log('result: ', result);
             return result;
         })
         .catch(err => {
@@ -67,3 +85,31 @@ const getTempPdfs = function (knex) {
         })
 
 };
+
+const getTemplateById = function(knex, templateId){
+    return knex.select(knex.raw("* from templates"))
+        .where("id", templateId)
+        .debug()
+        .then(result => {
+            // console.log('result: ', result);
+            return result;
+        })
+        .catch(err => {
+            console.log("getTemplateById: err", err);
+            throw err;
+        })
+}
+
+const getTempPdfByTemplateId = (knex, templateId) => {
+    return knex.select(knex.raw("* from template_pdfs"))
+        .where("temp_id", templateId)
+        .debug()
+        .then(result => {
+            // console.log('result: ', result);
+            return result;
+        })
+        .catch(err => {
+            console.log("getTempPdfByTemplateId: err", err);
+            throw err;
+        })
+}
