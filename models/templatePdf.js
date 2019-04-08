@@ -2,8 +2,6 @@
 const { knex } = require("../config/database");
 
 const tblName = 'template_pdfs';
-const fillInfoTableName = 'fill_infos';
-
 /*
 Required Param: Int template_id, Array pdfs, Array pdf_sequences.
 */
@@ -29,33 +27,39 @@ const insertPdf = (template_id, pdfs, pdf_sequences) => {
     });
 }
 
-const insertTemplateInfos = (x_position, y_position, pdf_id, label, label_value, pdf_page_no) => {
-    console.log('***insertPdf***');
-    console.log('tblName: ', fillInfoTableName);
-    let data = [];
-    pdf_id.forEach((element,index) => {
-        let obj = {};
-        obj['pdf_id']      = pdf_id[index];
-        obj['x_position']     = x_position[index];
-        obj['y_position'] = y_position[index];
-        obj['label'] = label[index];
-        obj['label_value'] = label_value[index];
-        obj['pdf_page_no'] = pdf_page_no[index];
-        data = [...data, obj];
-    });
-    console.log('data: ', data);
-    return knex(fillInfoTableName).insert(data).then((result) => {
-        console.log('Insert into DB: ', result);
-        return result;
-    }).catch((err) => {
-        console.log('err: ', err);
-        throw new Error("Error in inserting PDFs into db.");
-    });
+const getTemplatesPdfs = function () {
+    return knex.select(knex.raw("* from " + tblName))
+        .debug()
+        .then(result => {
+            console.log('result: ', result);
+            return result;
+        })
+        .catch(err => {
+            console.log("getTemplatesPdfs: err", err);
+            throw err;
+        })
+
+};
+
+
+const getTempPdfByTemplateId = (templateId) => {
+    return knex.select(knex.raw("* from " + tblName))
+        .where("temp_id", templateId)
+        .debug()
+        .then(result => {
+            // console.log('result: ', result);
+            return result;
+        })
+        .catch(err => {
+            console.log("getTempPdfByTemplateId: err", err);
+            throw new Error("Error in getting PDFs from db.");
+        })
 }
 
 
 
 module.exports = {
     insertPdf,
-    insertTemplateInfos
+    getTemplatesPdfs,
+    getTempPdfByTemplateId
 };

@@ -21,7 +21,7 @@ router.post('/save', upload.array('pdf_name[]', 12), tplController.saveTemplate)
 
 router.get('/delete/:tempId', tplController.deleteTemplate);
 
-router.get('/view', tplController.viewTemplate);
+router.get('/view', tplController.viewUserTemplates);
 router.get('/edit-info/:tempId', tplController.editTemplateInfo);
 
 router.post('/edit-info-save', tplController.saveTemplateInfo);

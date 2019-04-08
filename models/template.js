@@ -32,7 +32,7 @@ const getUserTemplates = function (userId) {
 
     console.log('tblName: ', tblName);
 
-    return knex.select(knex.raw("* from templates"))
+    return knex.select(knex.raw("* from " + tblName))
         .where("user_id", userId)
         .debug()
         .then(result => {
@@ -49,7 +49,7 @@ const getUserTemplates = function (userId) {
 Required Param: int templateId
 */
 const deleteTemplates = function (templateId) {
-    
+
     console.log('templateId: ', templateId);
 
     console.log('tblName: ', tblName);
@@ -61,14 +61,29 @@ const deleteTemplates = function (templateId) {
     }).catch((err) => {
         console.log('err: ', err);
     });
-
-
-
 }
+
+
+
+const getTemplateById = function (templateId) {
+    return knex.select(knex.raw("* from " + tblName))
+        .where("id", templateId)
+        .debug()
+        .then(result => {
+            // console.log('result: ', result);
+            return result;
+        })
+        .catch(err => {
+            console.log("getTemplateById: err", err);
+            throw new Error("Error in getting template by id from db.");
+        })
+}
+
 
 
 module.exports = {
     insertTemplate,
     getUserTemplates,
-    deleteTemplates
+    deleteTemplates,
+    getTemplateById
 };

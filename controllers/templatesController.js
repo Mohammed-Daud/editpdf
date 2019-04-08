@@ -1,14 +1,27 @@
+const {
+    knex
+} = require("./../config/database");
+const {
+    insertTemplate,
+    deleteTemplates,
+    getUserTemplates,
+    getTemplateById
+} = require("../models/template");
+const {
+    insertPdf,
+    getTemplatesPdfs,
+    getTempPdfByTemplateId
+} = require("../models/templatePdf");
 
-
-const { knex } = require("./../config/database");
-const { insertTemplate,deleteTemplates } = require("../models/template");
-const { insertPdf, insertTemplateInfos } = require("../models/templatePdf");
+const {
+    insertTemplateInfos
+} = require("../models/fillPdfInfo");
 
 exports.addTemplate = function (req, res) {
     res.render('templates/template_add_form.ejs');
 };
 
-exports.saveTemplate = async function(req, res, next) {
+exports.saveTemplate = async function (req, res, next) {
     const temp_name = req.body.temp_name;
     const pdfs = req.files;
     const pdf_sequences = req.body.pdf_sequence;
@@ -20,7 +33,7 @@ exports.saveTemplate = async function(req, res, next) {
     res.json(req.body);
 };
 
-exports.saveTemplateInfo = async function(req, res, next) {
+exports.saveTemplateInfo = async function (req, res, next) {
     const x_position = req.body.xposition;
     const y_position = req.body.yposition;
     const pdf_id = req.body.pdfId;
@@ -33,7 +46,7 @@ exports.saveTemplateInfo = async function(req, res, next) {
     console.log(req.files);
     res.redirect('back');
     res.json(req.body);
-    
+
     // knex('fill_infos').insert({x_position: req.body.xposition, y_position:req.body.yposition, pdf_id:req.body.pdfId, label: req.body.label, label_value:req.body.name, pdf_page_no:req.body.page})
     // .then(result => {
     //     console.log('result: ', result);
@@ -48,8 +61,8 @@ exports.saveTemplateInfo = async function(req, res, next) {
 };
 
 
-exports.viewTemplate = async function (req, res) {
-    Promise.all([getTemplates(knex), getTempPdfs(knex)])
+exports.viewUserTemplates = async function (req, res) {
+    Promise.all([getUserTemplates(1), getTemplatesPdfs()])
         .then(([templates, templatePdfs]) => {
             console.log('templates, templatePdfs: ', templates, templatePdfs);
             res.render('templates/templates_list.ejs', {
@@ -63,10 +76,10 @@ exports.viewTemplate = async function (req, res) {
         })
 };
 
-exports.editTemplateInfo = async function(req, res) {
+exports.editTemplateInfo = async function (req, res) {
     console.log('req: ', req.params.tempId);
 
-    Promise.all([getTemplateById(knex, req.params.tempId), getTempPdfByTemplateId(knex, req.params.tempId)])
+    Promise.all([getTemplateById(req.params.tempId), getTempPdfByTemplateId(req.params.tempId)])
         .then(([template, templatePdfs]) => {
             console.log('template: ', template);
             console.log('templatePdfs: ', templatePdfs);
@@ -97,63 +110,3 @@ exports.deleteTemplate = (req, res) => {
             throw err;
         });
 }
-
-const getTemplates = function (knex) {
-    return knex.select(knex.raw("* from templates"))
-        .where("user_id", 1)
-        .debug()
-        .then(result => {
-            // console.log('result: ', result);
-            return result;
-        })
-        .catch(err => {
-            console.log("getTemlates: err", err);
-            throw err;
-        })
-
-};
-
-const getTempPdfs = function (knex) {
-    return knex.select(knex.raw("* from template_pdfs"))
-        .debug()
-        .then(result => {
-            console.log('result: ', result);
-            return result;
-        })
-        .catch(err => {
-            console.log("getTempPdfs: err", err);
-            throw err;
-        })
-
-};
-
-const getTemplateById = function(knex, templateId){
-    return knex.select(knex.raw("* from templates"))
-        .where("id", templateId)
-        .debug()
-        .then(result => {
-            // console.log('result: ', result);
-            return result;
-        })
-        .catch(err => {
-            console.log("getTemplateById: err", err);
-            throw err;
-        })
-}
-
-const getTempPdfByTemplateId = (knex, templateId) => {
-    return knex.select(knex.raw("* from template_pdfs"))
-        .where("temp_id", templateId)
-        .debug()
-        .then(result => {
-            // console.log('result: ', result);
-            return result;
-        })
-        .catch(err => {
-            console.log("getTempPdfByTemplateId: err", err);
-            throw err;
-        })
-}
-
-
-
