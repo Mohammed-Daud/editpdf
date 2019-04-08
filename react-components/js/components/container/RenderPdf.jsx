@@ -148,7 +148,7 @@ export default class RenderPdf extends Component {
     }
     
     const listItems = templatePdfs.map((e) =>
-        <li onClick={this.changePdf.bind(this, e.id, e.pdf_name)}><a>{e.pdf_name}</a></li>
+        <li onClick={this.changePdf.bind(this, e.id, e.pdf_name)} style={{cursor:'pointer'}}><a>{e.pdf_name}</a></li>
     );
 
     const renderForm = templatePdfs.map((e) =>
@@ -177,21 +177,25 @@ export default class RenderPdf extends Component {
                             {
                                 templateForms.map((e, i) =>
                                     <div>
-                                        <p>{`Cursor Position of x ${e.xPosition} and y ${e.yPosition}`}</p>
-                                        <input type="hidden" className="form-control" name="xposition" value={`${e.xPosition}`} id=""/>
-                                        <input type="hidden" className="form-control" name="yposition" value={`${e.yPosition}`} id=""/>
-                                        <input type="hidden" className="form-control" name="pdfId" value={`${e.pdfId}`} id=""/>
-                                        <input type="hidden" className="form-control" name="page" value={`${e.pageNo}`} id=""/>
-                                        <input type="hidden" className="form-control" name="pdfName" value={`${e.pdfName}`} id=""/>
-                                        <div className="form-group">
-                                            <label for="">Label</label>
-                                            <input type="text" className="form-control" name="label" />
+                                        <div style={{marginTop:'10px'}}>
+                                            <p>{`Cursor Position of x ${e.xPosition} and y ${e.yPosition}`}</p>
+                                            <input type="hidden" className="form-control" name="xposition" value={`${e.xPosition}`} id=""/>
+                                            <input type="hidden" className="form-control" name="yposition" value={`${e.yPosition}`} id=""/>
+                                            <input type="hidden" className="form-control" name="pdfId" value={`${e.pdfId}`} id=""/>
+                                            <input type="hidden" className="form-control" name="page" value={`${e.pageNo}`} id=""/>
+                                            <input type="hidden" className="form-control" name="pdfName" value={`${e.pdfName}`} id=""/>
+                                            <div className="form-group">
+                                                <label for="">Label</label>
+                                                <input type="text" className="form-control" name="label" />
+                                            </div>
+                                            <div className="form-group">
+                                                <label for="">Name</label>
+                                                <input className="form-control" name="name" min="0" />
+                                            </div>
                                         </div>
-                                        <div className="form-group">
-                                            <label for="">Name</label>
-                                            <input className="form-control" name="name" min="0" />
+                                        <div style={{marginBottom:'50px'}}>
+                                            <a className="pull-right"  style={{cursor:'pointer'}} onClick={this.remove.bind(this, i)}>Remove</a>
                                         </div>
-                                        <a className="pull-right" onClick={this.remove.bind(this, i)}>Remove</a>
                                     </div>
                                 )
                             }
@@ -205,12 +209,12 @@ export default class RenderPdf extends Component {
                     <div id="cursorPosition" onClick={this._getCursorPosition.bind(this)} style={{position: 'relative', border:'1px solid red'}}>
                         <div id="thing" title={`${x} x ${y}`} style={{border:'2px solid red', position: 'absolute', background:'red', height:'2px', width:'2px', display:`${display}`}}></div>
                         <PDF
-                            file={`/${currentPdf}`}
+                            file={`${process.env.APP_URL}/uploads/${currentPdf}`}
                             onDocumentComplete={this.onDocumentComplete}
                             page={this.state.page}
                         />
-                        {pagination}
                     </div>
+                    {pagination}
                 </div>
 
                 <div className="col-md-2">
