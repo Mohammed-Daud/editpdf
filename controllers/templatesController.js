@@ -98,6 +98,12 @@ exports.deleteTemplate = (req, res) => {
         });
 }
 
+exports.generate = (req, res) => {
+    res.send(req.params.tempId);
+}
+
+
+
 const getTemplates = function (knex) {
     return knex.select(knex.raw("* from templates"))
         .where("user_id", 1)

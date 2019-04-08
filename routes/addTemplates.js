@@ -25,6 +25,8 @@ router.get('/view', tplController.viewTemplate);
 router.get('/edit-info/:tempId', tplController.editTemplateInfo);
 
 router.post('/edit-info-save', tplController.saveTemplateInfo);
+router.get('/generate/:tempId', tplController.generate);
+
 
 
 module.exports = router;
