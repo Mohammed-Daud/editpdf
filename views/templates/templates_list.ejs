@@ -35,9 +35,13 @@
                         <td><%= template.temp_name %></td>
                         <td>
                             <ol>
+                                
                                 <% templatePdfs.forEach(pdf => {%>
                                     <% if(template.id == pdf.temp_id){%>
-                                        <li><%= pdf.pdf_name %></li>
+                                        <li>
+                                            <%= pdf.pdf_name %>
+                                            <a href="/templates/generate/<%= pdf.id %>" class="btn btn-xs btn-default">Generate Doc <%= pdf.id %></a>
+                                        </li>
                                     <% } %>
                                 <% }); %>
                             </ol>
@@ -46,6 +50,7 @@
                             <a href="/templates/edit-info/<%= template.id %>" class="btn btn-xs btn-default">Edit Fill Info</a>
                             <a href="/templates/delete/<%= template.id %>" class="btn btn-xs btn-default">Delete Template</a>
                             <a href="/templates/generate/<%= template.id %>" class="btn btn-xs btn-default">Generate Doc</a>
+                            
                         </td>
                     </tr>
                     <tr>

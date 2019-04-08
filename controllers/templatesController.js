@@ -1,8 +1,9 @@
 
 
 const { knex } = require("./../config/database");
-const { insertTemplate,deleteTemplates } = require("../models/template");
+const { insertTemplate,deleteTemplates, getUserTemplates } = require("../models/template");
 const { insertPdf, insertTemplateInfos } = require("../models/templatePdf");
+//const { insertPdf, insertTemplateInfos } = require("../models/fillInfo");
 
 exports.addTemplate = function (req, res) {
     res.render('templates/template_add_form.ejs');
@@ -47,8 +48,12 @@ exports.saveTemplateInfo = async function(req, res, next) {
     // res.json(req.body);
 };
 
-
+/*
+http://localhost:3000/templates/view
+*/
 exports.viewTemplate = async function (req, res) {
+    
+    
     Promise.all([getTemplates(knex), getTempPdfs(knex)])
         .then(([templates, templatePdfs]) => {
             console.log('templates, templatePdfs: ', templates, templatePdfs);
@@ -99,7 +104,26 @@ exports.deleteTemplate = (req, res) => {
 }
 
 exports.generate = (req, res) => {
-    res.send(req.params.tempId);
+    const templateId = req.params.tempId;
+    knex('users').where({
+        'users.id': '1',
+        'templates.id': templateId,
+    })
+    .debug()
+    .join('templates', 'users.id', 'templates.user_id')
+    .join('template_pdfs', 'templates.id', 'template_pdfs.temp_id')
+    .join('fill_infos', 'template_pdfs.id', 'fill_infos.pdf_id')
+    .select('*').then(result => {
+        console.log('result: ', result);
+        return result;
+    })
+    .catch(err => {
+        console.log("getTemlates: err", err);
+        throw err;
+    }).finally(() => {
+        res.send(req.params.tempId);
+    });
+
 }
 
 
