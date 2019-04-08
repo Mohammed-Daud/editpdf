@@ -61,4 +61,4 @@ typings/
 .next
 
 # PDF upload folder
-uploads/
+public/uploads/

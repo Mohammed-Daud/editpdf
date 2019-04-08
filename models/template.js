@@ -25,8 +25,50 @@ const insertTemplate = function (temp_name) {
 
 
 }
+/*
+Required Param: int userId
+*/
+const getUserTemplates = function (userId) {
+
+    console.log('tblName: ', tblName);
+
+    return knex.select(knex.raw("* from templates"))
+        .where("user_id", userId)
+        .debug()
+        .then(result => {
+            return result;
+        })
+        .catch(err => {
+            console.log("getUserTemplates: err", err);
+            throw new Error("Error in getting templates of user from db.");
+        });
+
+}
+
+/*
+Required Param: int templateId
+*/
+const deleteTemplates = function (templateId) {
+    
+    console.log('templateId: ', templateId);
+
+    console.log('tblName: ', tblName);
+
+    return knex(tblName).where('id', templateId).del().then(function (result) {
+        console.log(result);
+
+        return '1';
+    }).catch((err) => {
+        console.log('err: ', err);
+    });
+
+
+
+}
 
 
 module.exports = {
-    insertTemplate
+    insertTemplate,
+    getUserTemplates,
+    deleteTemplates
 };

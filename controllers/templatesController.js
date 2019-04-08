@@ -1,7 +1,7 @@
 
 
 const { knex } = require("./../config/database");
-const { insertTemplate } = require("../models/template");
+const { insertTemplate,deleteTemplates } = require("../models/template");
 const { insertPdf, insertTemplateInfos } = require("../models/templatePdf");
 
 exports.addTemplate = function (req, res) {
@@ -86,6 +86,18 @@ exports.editTemplateInfo = async function(req, res) {
         })
 }
 
+exports.deleteTemplate = (req, res) => {
+    deleteTemplates(req.params.tempId)
+        .then(result => {
+            console.log('result: ', result);
+            res.redirect('back');
+        })
+        .catch(err => {
+            console.log("getTempPdfByTemplateId: err", err);
+            throw err;
+        });
+}
+
 const getTemplates = function (knex) {
     return knex.select(knex.raw("* from templates"))
         .where("user_id", 1)
@@ -142,3 +154,6 @@ const getTempPdfByTemplateId = (knex, templateId) => {
             throw err;
         })
 }
+
+
+
